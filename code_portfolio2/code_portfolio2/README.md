@@ -25,6 +25,13 @@ JWT_SECRET=[JWT_SECRET]
 SALT_ROUNDS=[10]
 ```
 
+## Getting certificates
+These instructions will get you the certificates.
+- Download OpenSSL from this website: https://slproweb.com/products/Win32OpenSSL.html
+- Install OpenSSL and open the terminal by searching 'Win64 OpenSSL Command Prompt' in the Windows searchbar
+- Paste the folowing command: openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout localhost.key -out localhost.crt into the terminal
+- Locate the keys in 'C:\Users\YOUR_NAME' and copy paste them into 'C:/SSL/Certificates' both localhost.key and localhost.crt
+
 ## Installation
 
 ```bash

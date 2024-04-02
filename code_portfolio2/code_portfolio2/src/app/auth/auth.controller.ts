@@ -6,9 +6,8 @@ import {
 	Param,
 	Post,
 	Put,
-	UseGuards,
+	UseGuards
 } from '@nestjs/common';
-import { RolesGuard } from 'src/roles/roles.guard';
 
 import {
 	UserRegistration,
@@ -16,11 +15,14 @@ import {
 	TokenString,
 	ResourceId,
 	IdentityModel,
+	Role,
 } from '../models/auth.model';
 import { User } from '../user/user.schema';
 
 import { AuthService } from './auth.service';
 import { InjectToken, Token } from './token.decorator';
+import { HasRoles } from 'src/roles/roles.decorator';
+import { RolesGuard } from 'src/roles/roles.guard';
 
 @Controller()
 export class AuthController {
@@ -28,6 +30,7 @@ export class AuthController {
 
 	@Post('register')
 	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
 	async register(@Body() newUser: UserRegistration): Promise<ResourceId> {
 		let identityUser = null;
 
@@ -75,6 +78,7 @@ export class AuthController {
 
 	@Put(':id')
 	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
 	async editUserById(@Param('id') userId: string, @Body() userInfo: UserRegistration): Promise<User> {
 		let identityUser = null;
 		try {

@@ -6,14 +6,18 @@ import {
 	Param,
 	Post,
 	Put,
-	UseGuards,
+	UseGuards
 } from '@nestjs/common';
-import { RolesGuard } from 'src/roles/roles.guard';
+
 
 import { Field } from './field.schema';
 import { FieldService } from './field.service';
+import { HasRoles } from 'src/roles/roles.decorator';
+import { Role } from '../models/auth.model';
+import { RolesGuard } from 'src/roles/roles.guard';
 
 @Controller('field')
+@UseGuards(RolesGuard)
 export class FieldController {
 	constructor(private readonly fieldService: FieldService) { }
 
@@ -21,12 +25,14 @@ export class FieldController {
 
 	@Post()
 	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
 	async createField(@Body() newField: Field): Promise<Field> {
 		return await this.fieldService.createField(newField);
 	}
 
 	@Put(':id')
 	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
 	async editField(
 		@Param('id') id: string,
 		@Body() newField: Field,
@@ -51,6 +57,7 @@ export class FieldController {
 
 	@Delete(':id')
 	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
 	async deleteField(@Param('id') id: string): Promise<Field> {
 		return await this.fieldService.deleteField(id);
 	}

@@ -14,8 +14,11 @@ import { RolesGuard } from 'src/roles/roles.guard';
 import { Template } from './template.schema';
 
 import { TemplateService } from './template.service';
+import { HasRoles } from 'src/roles/roles.decorator';
+import { Role } from '../models/auth.model';
 
 @Controller()
+@UseGuards(RolesGuard)
 export class TemplateController {
     constructor(private readonly templateService: TemplateService) { }
 
@@ -25,7 +28,8 @@ export class TemplateController {
     }
 
     @Post('template')
-    @UseGuards(RolesGuard)
+	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
     async createTemplate(
         @Body('name') name: string,
         @Body('content') content: string,
@@ -39,7 +43,8 @@ export class TemplateController {
     }
 
     @Put('template/:id')
-    @UseGuards(RolesGuard)
+	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
     async updateTemplate(
         @Param('id') id: string,
         @Body() template: Template,
@@ -52,7 +57,8 @@ export class TemplateController {
     }
 
     @Delete('template/:id')
-    @UseGuards(RolesGuard)
+	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
     async deleteTemplate(@Param('id') id: string): Promise<Template> {
         try {
             return await this.templateService.deleteTemplate(id);

@@ -42,6 +42,7 @@ export class ContractService {
 			}
 
 			const createdContract = new this.contractModel(contract);
+			console.log('Created contract: ', createdContract);
 			return createdContract.save().catch((err) => {
 				if (err.code == 11000) {
 					throw new HttpException(

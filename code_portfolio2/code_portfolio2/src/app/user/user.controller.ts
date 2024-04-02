@@ -16,6 +16,7 @@ import { Role } from '../models/auth.model';
 import { RolesGuard } from 'src/roles/roles.guard';
 import { OrganisationService } from '../organisation/organisation.service';
 import { Organisation } from '../organisation/organisation.schema';
+import { HasRoles } from 'src/roles/roles.decorator';
 
 @Controller('user')
 export class UserController {
@@ -29,6 +30,7 @@ export class UserController {
 
 	@Get('role/:role')
 	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
 	async getAllUsersByRole(
 		@InjectToken() token: Token,
 		@Param('role') role: Role,
@@ -56,7 +58,7 @@ export class UserController {
 	}
 
 	@Get()
-	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
 	async getAllUsers(): Promise<User[]> {
 		return await this.userService.getAllUsers();
 	}
@@ -70,7 +72,7 @@ export class UserController {
 	}
 
 	@Put(':id')
-	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
 	async editUserById(
 		@Param('id') id: string,
 		@Body() user: User,
@@ -83,13 +85,11 @@ export class UserController {
 	}
 
 	@Delete(':id')
-	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
 	async deleteUserById(
 		@Param('id') idToBeDeleted: string,
 		@InjectToken() token: Token,
 	): Promise<User> {
 		return await this.userService.deleteIdentityByIdAndUserById(idToBeDeleted, token.id);
 	}
-
-
 }

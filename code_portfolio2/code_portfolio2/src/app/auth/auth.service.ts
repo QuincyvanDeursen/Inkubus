@@ -10,7 +10,6 @@ import { Identity, IdentityDocument } from './identity.schema';
 import { User, UserDocument } from '../user/user.schema';
 import { Role } from '../models/auth.model';
 import { OrganisationService } from '../organisation/organisation.service';
-import { userInfo } from 'os';
 
 @Injectable()
 export class AuthService {

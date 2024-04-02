@@ -8,11 +8,13 @@ import {
 	Put,
 	UseGuards,
 } from '@nestjs/common';
-import { RolesGuard } from 'src/roles/roles.guard';
 
 import { Category } from './category.schema';
 import { CategoryService } from './category.service';
 import { FieldService } from '../field/field.service';
+import { HasRoles } from 'src/roles/roles.decorator';
+import { Role } from '../models/auth.model';
+import { RolesGuard } from 'src/roles/roles.guard';
 
 @Controller('category')
 export class CategoryController {
@@ -23,6 +25,7 @@ export class CategoryController {
 
 	@Post()
 	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
 	async createCategory(@Body() category: Category): Promise<Category> {
 		return await this.categoryService.createCategory(category);
 	}
@@ -39,12 +42,14 @@ export class CategoryController {
 
 	@Put()
 	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
 	async editCategoryById(@Body() category: Category): Promise<Category> {
 		return await this.categoryService.editCategoryById(category);
 	}
 
 	@Delete(':id')
 	@UseGuards(RolesGuard)
+	@HasRoles(Role.Admin)
 	async deleteCategory(@Param('id') id: string): Promise<Category> {
 		return await this.fieldService.deleteFieldsAndParentCat(id);
 	}

@@ -54,6 +54,11 @@ export class OrganisationService {
 		return await this.organisationModel.find();
 	}
 
+	async getMyOrganisations(id : string): Promise<Organisation[]> {
+		var result = await this.userService.getOrganisationsFromUser(id);
+		return result
+	}
+
 	async updateOrganisation(
 		id: string,
 		organisation: Organisation,
